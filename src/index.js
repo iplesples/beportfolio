@@ -2,25 +2,30 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 dotenv.config();
 
 const app = express();
 
-// 📌 koneksi ke MongoDB
+// 📌 Koneksi ke MongoDB
 connectDB();
 
-// 📌 middleware
-//app.use(express.json()); // untuk parsing json
-//app.use(express.urlencoded({ extended: true })); //untuk menerima dari form HTML
-app.use(cors()); // agar bisa diakses dari luar domain
+// 📌 Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-// Tes respone
+// 📌 Routes
+app.use('/api/admin', adminRoutes);
+
+// 📌 Tes endpoint
 app.get('/', (req, res) => {
-    res.send('tes okey')
-  })
+    res.send('Server berjalan dengan baik 🚀');
+});
 
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
+// 📌 Jalankan server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
     console.log(`Server berjalan di port ${PORT}`);
-  });
+});
